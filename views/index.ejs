@@ -7,12 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-    <input type="text" id="palavra" oninput="enviar()">
-    <button onclick="enviar()">Enviar</button>
-    <hr>
-    <p id="resultado"></p>
-</body>
+   <h1>Chat</h1>
+   <div id="chat">
 
+   </div><br>
+   <input type="text" id="msg"  placeholder="mensagem:"><br>
+   <input type="text" id="username" placeholder="Seu nome:">
+   <button onclick="enviar()">Enviar</button>
+
+
+</body>
 <!--Conectando socket com backend-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
 <script>  
@@ -20,20 +24,16 @@
     socket.on("disconnect", ()=>{
         console.log("Desconectado!");
     })
-    socket.emit("boasvindas",{nome: "Victor"});
+  
+  function enviar(){
+      var msgField = document.getElementById("msg");
+      var userNameField = document.getElementById("username");
 
-    socket.on("resultado", (data)=>{
-        console.log(data);
+      var msg = msgField.value;
+      var username = userNameField.value;
 
-        var p = document.getElementById("resultado");
-        p.innerHTML = data;
-    });
-
-    function enviar(){
-        var input = document.getElementById('palavra');
-        console.log(input.value);
-        socket.emit("palavra", input.value);
-    }
+      socket.emit("msg", {msg: msg, username: username});
+  }
 </script>
 <!--fim conexão-->
 </html>
